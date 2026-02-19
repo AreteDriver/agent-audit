@@ -1,0 +1,54 @@
+# Provider pricing database for agent-audit.
+# Prices in USD per 1K tokens. Updated 2025-Q4.
+
+providers:
+  anthropic:
+    default_model: claude-sonnet-4
+    models:
+      claude-opus-4:
+        input: 0.015
+        output: 0.075
+        context: 200000
+      claude-sonnet-4:
+        input: 0.003
+        output: 0.015
+        context: 200000
+      claude-haiku-3.5:
+        input: 0.0008
+        output: 0.004
+        context: 200000
+
+  openai:
+    default_model: gpt-4o
+    models:
+      gpt-4o:
+        input: 0.0025
+        output: 0.01
+        context: 128000
+      gpt-4o-mini:
+        input: 0.00015
+        output: 0.0006
+        context: 128000
+      o1:
+        input: 0.015
+        output: 0.06
+        context: 200000
+
+  ollama:
+    default_model: llama3.3-70b
+    models:
+      llama3.3-70b:
+        input: 0.0
+        output: 0.0
+        context: 131072
+        notes: "Self-hosted, hardware cost not included"
+      deepseek-r1:
+        input: 0.0
+        output: 0.0
+        context: 65536
+        notes: "Self-hosted"
+
+# Map Gorgon step types to providers.
+step_type_mapping:
+  claude_code: anthropic
+  openai: openai
