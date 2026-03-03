@@ -3,7 +3,7 @@ requires = ["setuptools>=68.0", "setuptools-scm>=8.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "agent-lint"
+name = "agentlinter"
 version = "0.1.1"
 description = "Estimate costs and lint agent workflow YAML files"
 readme = "README.md"
