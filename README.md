@@ -34,7 +34,7 @@ No proxies. No SDK integration. Just point it at your workflow file.
 ## Install
 
 ```bash
-pip install agent-lint
+pip install agentlinter
 ```
 
 ## Why
