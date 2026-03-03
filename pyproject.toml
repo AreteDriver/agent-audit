@@ -33,6 +33,7 @@ dependencies = [
 [project.optional-dependencies]
 dev = [
     "pytest>=7.0",
+    "pytest-cov>=4.0",
     "mypy>=1.0",
     "ruff>=0.1.0",
 ]
@@ -63,6 +64,7 @@ select = ["E", "F", "W", "I", "N", "UP", "B", "A", "SIM"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+addopts = "--cov=agent_lint --cov-report=term-missing --cov-fail-under=85"
 
 [tool.mypy]
 python_version = "3.11"

@@ -1,0 +1,11 @@
+[extend]
+useDefault = true
+
+[allowlist]
+regexTarget = "match"
+regexes = [
+  '''agent-lint-v1''',
+]
+paths = [
+  '''tests/''',
+]
