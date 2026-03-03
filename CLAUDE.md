@@ -67,11 +67,23 @@ Resolution order per step:
 | custom_pricing | No | Yes |
 
 ## Testing
-- 193 tests, pytest
-- `tests/conftest.py` has sample workflow YAML fixtures
-- All parsers tested via fixture files
+- 243 tests, pytest, 95% coverage (fail_under=90)
+- `tests/conftest.py` has sample workflow YAML fixtures (Gorgon, CrewAI, LangChain, Generic)
+- `tests/test_coverage_push_90.py` — targeted coverage for crewai, langchain, generic parsers + CLI branches
+- Coverage gate enforced via `addopts` in pyproject.toml (pytest-cov)
+
+## CI/CD
+- **CI**: lint (ruff check + format) + test matrix on push/PR (`ci.yml`)
+- **CodeQL**: security scanning (`codeql.yml`)
+- **Secret Scan**: gitleaks v8.24.3 on push/PR to main (`secret-scan.yml`)
+- **Security**: pip-audit on push/PR + weekly Monday 6am UTC (`security.yml`)
+- **Release**: tag-triggered `v*` — pytest gate → build → GitHub Release (softprops/action-gh-release) → PyPI OIDC publish (`release.yml`)
+- **Gitleaks allowlist**: `.gitleaks.toml` — `agent-lint-v1` salt + `tests/` path
+- **PyPI**: OIDC Trusted Publisher, `environment: pypi`
 
 ## Conventions
 - Python 3.11+, `from __future__ import annotations` everywhere
 - Ruff lint + format (B008 suppressed for cli.py — Typer pattern)
 - Dependencies: typer, rich, pydantic, pyyaml
+- Three-name scheme: PyPI=`agentlinter`, import=`agent_lint`, CLI=`agent-lint`
+- Local directory: `/home/arete/projects/agent-audit` (pre-rename dir name)
