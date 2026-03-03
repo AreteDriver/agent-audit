@@ -1,4 +1,4 @@
-"""Feature gating decorators for agent-audit."""
+"""Feature gating decorators for agent-lint."""
 
 from __future__ import annotations
 
@@ -9,7 +9,7 @@ from typing import Any, TypeVar
 import typer
 from rich.console import Console
 
-from agent_audit.licensing import get_upgrade_message, has_feature
+from agent_lint.licensing import get_upgrade_message, has_feature
 
 F = TypeVar("F", bound=Callable[..., Any])
 

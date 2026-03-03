@@ -1,4 +1,4 @@
-"""Tests for agent_audit.cli."""
+"""Tests for agent_lint.cli."""
 
 from __future__ import annotations
 
@@ -6,8 +6,8 @@ from pathlib import Path
 
 from typer.testing import CliRunner
 
-from agent_audit import __version__
-from agent_audit.cli import app
+from agent_lint import __version__
+from agent_lint.cli import app
 
 runner = CliRunner()
 
@@ -99,4 +99,4 @@ class TestStatusCommand:
         result = runner.invoke(app, ["status"])
         assert result.exit_code == 0
         assert "Free" in result.output
-        assert "agent-audit" in result.output
+        assert "agent-lint" in result.output

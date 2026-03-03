@@ -1,9 +1,9 @@
-"""Tests for agent_audit.linter."""
+"""Tests for agent_lint.linter."""
 
 from __future__ import annotations
 
-from agent_audit.linter import run_lint
-from agent_audit.models import (
+from agent_lint.linter import run_lint
+from agent_lint.models import (
     ParsedStep,
     ParsedWorkflow,
     RuleCategory,

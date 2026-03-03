@@ -8,8 +8,8 @@ from typing import Any
 
 import yaml
 
-from agent_audit.exceptions import ParseError
-from agent_audit.models import ParsedWorkflow, WorkflowFormat
+from agent_lint.exceptions import ParseError
+from agent_lint.models import ParsedWorkflow, WorkflowFormat
 
 logger = logging.getLogger(__name__)
 
@@ -78,20 +78,20 @@ def parse_workflow(path: Path) -> ParsedWorkflow:
     fmt = detect_format(raw)
 
     if fmt == WorkflowFormat.GORGON:
-        from agent_audit.parsers.gorgon import parse_gorgon
+        from agent_lint.parsers.gorgon import parse_gorgon
 
         return parse_gorgon(raw, source_path=str(path))
 
     if fmt == WorkflowFormat.CREWAI:
-        from agent_audit.parsers.crewai import parse_crewai
+        from agent_lint.parsers.crewai import parse_crewai
 
         return parse_crewai(raw, source_path=str(path))
 
     if fmt == WorkflowFormat.LANGCHAIN:
-        from agent_audit.parsers.langchain import parse_langchain
+        from agent_lint.parsers.langchain import parse_langchain
 
         return parse_langchain(raw, source_path=str(path))
 
-    from agent_audit.parsers.generic import parse_generic
+    from agent_lint.parsers.generic import parse_generic
 
     return parse_generic(raw, source_path=str(path))

@@ -1,11 +1,11 @@
-"""Tests for agent_audit.licensing."""
+"""Tests for agent_lint.licensing."""
 
 from __future__ import annotations
 
 from pathlib import Path
 from unittest.mock import patch
 
-from agent_audit.licensing import (
+from agent_lint.licensing import (
     PRO_FEATURES,
     TIER_DEFINITIONS,
     Tier,
@@ -21,33 +21,33 @@ from agent_audit.licensing import (
 
 
 def _make_valid_key() -> str:
-    """Build a valid AAUD license key with correct checksum."""
+    """Build a valid ALNT license key with correct checksum."""
     body = "TEST-ABCD"
     check = _compute_check_segment(body)
-    return f"AAUD-{body}-{check}"
+    return f"ALNT-{body}-{check}"
 
 
 class TestKeyFormat:
     def test_valid_format(self) -> None:
-        assert _validate_key_format("AAUD-ABCD-EFGH-IJKL")
+        assert _validate_key_format("ALNT-ABCD-EFGH-IJKL")
 
     def test_wrong_prefix(self) -> None:
         assert not _validate_key_format("MCPM-ABCD-EFGH-IJKL")
 
     def test_too_few_parts(self) -> None:
-        assert not _validate_key_format("AAUD-ABCD-EFGH")
+        assert not _validate_key_format("ALNT-ABCD-EFGH")
 
     def test_too_many_parts(self) -> None:
-        assert not _validate_key_format("AAUD-ABCD-EFGH-IJKL-MNOP")
+        assert not _validate_key_format("ALNT-ABCD-EFGH-IJKL-MNOP")
 
     def test_lowercase_rejected(self) -> None:
-        assert not _validate_key_format("AAUD-abcd-EFGH-IJKL")
+        assert not _validate_key_format("ALNT-abcd-EFGH-IJKL")
 
     def test_wrong_length(self) -> None:
-        assert not _validate_key_format("AAUD-ABC-EFGH-IJKL")
+        assert not _validate_key_format("ALNT-ABC-EFGH-IJKL")
 
     def test_strips_whitespace(self) -> None:
-        assert _validate_key_format("  AAUD-ABCD-EFGH-IJKL  ")
+        assert _validate_key_format("  ALNT-ABCD-EFGH-IJKL  ")
 
 
 class TestKeyChecksum:
@@ -56,10 +56,10 @@ class TestKeyChecksum:
         assert _validate_key_checksum(key)
 
     def test_invalid_checksum(self) -> None:
-        assert not _validate_key_checksum("AAUD-TEST-ABCD-ZZZZ")
+        assert not _validate_key_checksum("ALNT-TEST-ABCD-ZZZZ")
 
     def test_bad_format_fails(self) -> None:
-        assert not _validate_key_checksum("AAUD-AB")
+        assert not _validate_key_checksum("ALNT-AB")
 
 
 class TestComputeCheckSegment:
@@ -76,28 +76,28 @@ class TestComputeCheckSegment:
 
 class TestFindLicenseKey:
     def test_env_var(self) -> None:
-        with patch.dict("os.environ", {"AGENT_AUDIT_LICENSE": "AAUD-AAAA-BBBB-CCCC"}):
-            assert _find_license_key() == "AAUD-AAAA-BBBB-CCCC"
+        with patch.dict("os.environ", {"AGENT_LINT_LICENSE": "ALNT-AAAA-BBBB-CCCC"}):
+            assert _find_license_key() == "ALNT-AAAA-BBBB-CCCC"
 
     def test_env_var_strips(self) -> None:
-        with patch.dict("os.environ", {"AGENT_AUDIT_LICENSE": "  AAUD-AAAA-BBBB-CCCC  "}):
-            assert _find_license_key() == "AAUD-AAAA-BBBB-CCCC"
+        with patch.dict("os.environ", {"AGENT_LINT_LICENSE": "  ALNT-AAAA-BBBB-CCCC  "}):
+            assert _find_license_key() == "ALNT-AAAA-BBBB-CCCC"
 
     def test_env_var_empty(self) -> None:
-        with patch.dict("os.environ", {"AGENT_AUDIT_LICENSE": ""}, clear=False):
+        with patch.dict("os.environ", {"AGENT_LINT_LICENSE": ""}, clear=False):
             result = _find_license_key()
             # Empty env var falls through to file search.
             assert result is None or result != ""
 
     def test_file_fallback(self, tmp_path: Path) -> None:
-        license_file = tmp_path / ".agent-audit-license"
+        license_file = tmp_path / ".agent-lint-license"
         key = _make_valid_key()
         license_file.write_text(key)
 
         with (
             patch.dict("os.environ", {}, clear=True),
             patch(
-                "agent_audit.licensing._LICENSE_LOCATIONS",
+                "agent_lint.licensing._LICENSE_LOCATIONS",
                 [str(license_file)],
             ),
         ):
@@ -106,7 +106,7 @@ class TestFindLicenseKey:
     def test_no_key_anywhere(self) -> None:
         with (
             patch.dict("os.environ", {}, clear=True),
-            patch("agent_audit.licensing._LICENSE_LOCATIONS", ["/nonexistent/path"]),
+            patch("agent_lint.licensing._LICENSE_LOCATIONS", ["/nonexistent/path"]),
         ):
             assert _find_license_key() is None
 
@@ -115,7 +115,7 @@ class TestGetLicenseInfo:
     def test_no_key_free(self) -> None:
         with (
             patch.dict("os.environ", {}, clear=True),
-            patch("agent_audit.licensing._LICENSE_LOCATIONS", []),
+            patch("agent_lint.licensing._LICENSE_LOCATIONS", []),
         ):
             info = get_license_info()
             assert info.tier == Tier.FREE
@@ -123,20 +123,20 @@ class TestGetLicenseInfo:
 
     def test_valid_key_pro(self) -> None:
         key = _make_valid_key()
-        with patch.dict("os.environ", {"AGENT_AUDIT_LICENSE": key}):
+        with patch.dict("os.environ", {"AGENT_LINT_LICENSE": key}):
             info = get_license_info()
             assert info.tier == Tier.PRO
             assert info.valid
             assert info.license_key == key
 
     def test_bad_format_stays_free(self) -> None:
-        with patch.dict("os.environ", {"AGENT_AUDIT_LICENSE": "bad-key"}):
+        with patch.dict("os.environ", {"AGENT_LINT_LICENSE": "bad-key"}):
             info = get_license_info()
             assert info.tier == Tier.FREE
             assert not info.valid
 
     def test_bad_checksum_stays_free(self) -> None:
-        with patch.dict("os.environ", {"AGENT_AUDIT_LICENSE": "AAUD-TEST-ABCD-ZZZZ"}):
+        with patch.dict("os.environ", {"AGENT_LINT_LICENSE": "ALNT-TEST-ABCD-ZZZZ"}):
             info = get_license_info()
             assert info.tier == Tier.FREE
             assert not info.valid
@@ -146,20 +146,20 @@ class TestHasFeature:
     def test_free_has_estimate(self) -> None:
         with (
             patch.dict("os.environ", {}, clear=True),
-            patch("agent_audit.licensing._LICENSE_LOCATIONS", []),
+            patch("agent_lint.licensing._LICENSE_LOCATIONS", []),
         ):
             assert has_feature("estimate")
 
     def test_free_lacks_compare(self) -> None:
         with (
             patch.dict("os.environ", {}, clear=True),
-            patch("agent_audit.licensing._LICENSE_LOCATIONS", []),
+            patch("agent_lint.licensing._LICENSE_LOCATIONS", []),
         ):
             assert not has_feature("compare")
 
     def test_pro_has_compare(self) -> None:
         key = _make_valid_key()
-        with patch.dict("os.environ", {"AGENT_AUDIT_LICENSE": key}):
+        with patch.dict("os.environ", {"AGENT_LINT_LICENSE": key}):
             assert has_feature("compare")
 
 
@@ -167,13 +167,13 @@ class TestIsPro:
     def test_free_tier(self) -> None:
         with (
             patch.dict("os.environ", {}, clear=True),
-            patch("agent_audit.licensing._LICENSE_LOCATIONS", []),
+            patch("agent_lint.licensing._LICENSE_LOCATIONS", []),
         ):
             assert not is_pro()
 
     def test_pro_tier(self) -> None:
         key = _make_valid_key()
-        with patch.dict("os.environ", {"AGENT_AUDIT_LICENSE": key}):
+        with patch.dict("os.environ", {"AGENT_LINT_LICENSE": key}):
             assert is_pro()
 
 
@@ -201,7 +201,7 @@ class TestUpgradeMessage:
 
     def test_contains_env_var(self) -> None:
         msg = get_upgrade_message("compare")
-        assert "AGENT_AUDIT_LICENSE" in msg
+        assert "AGENT_LINT_LICENSE" in msg
 
     def test_contains_price(self) -> None:
         msg = get_upgrade_message("compare")

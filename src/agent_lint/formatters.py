@@ -1,4 +1,4 @@
-"""Output formatters for agent-audit (table, json, markdown)."""
+"""Output formatters for agent-lint (table, json, markdown)."""
 
 from __future__ import annotations
 
@@ -7,7 +7,7 @@ import json as json_mod
 from rich.console import Console
 from rich.table import Table
 
-from agent_audit.models import CompareResult, LintReport, Severity, WorkflowEstimate
+from agent_lint.models import CompareResult, LintReport, Severity, WorkflowEstimate
 
 _SEVERITY_STYLE: dict[Severity, str] = {
     Severity.ERROR: "[red]error[/red]",

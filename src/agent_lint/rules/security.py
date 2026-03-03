@@ -4,8 +4,8 @@ from __future__ import annotations
 
 import re
 
-from agent_audit.models import LintFinding, ParsedWorkflow, RuleCategory, Severity, StepType
-from agent_audit.rules import lint_rule
+from agent_lint.models import LintFinding, ParsedWorkflow, RuleCategory, Severity, StepType
+from agent_lint.rules import lint_rule
 
 # Pattern for variable interpolation in shell commands.
 _SHELL_VAR_PATTERN = re.compile(r"\$\{[^}]+\}")

@@ -3,8 +3,8 @@ requires = ["setuptools>=68.0", "setuptools-scm>=8.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "agent-audit"
-version = "0.1.0"
+name = "agent-lint"
+version = "0.1.1"
 description = "Estimate costs and lint agent workflow YAML files"
 readme = "README.md"
 license = {text = "MIT"}
@@ -38,18 +38,18 @@ dev = [
 ]
 
 [project.scripts]
-agent-audit = "agent_audit.cli:app"
+agent-lint = "agent_lint.cli:app"
 
 [project.urls]
-Homepage = "https://github.com/AreteDriver/agent-audit"
-Repository = "https://github.com/AreteDriver/agent-audit"
-Issues = "https://github.com/AreteDriver/agent-audit/issues"
+Homepage = "https://github.com/AreteDriver/agent-lint"
+Repository = "https://github.com/AreteDriver/agent-lint"
+Issues = "https://github.com/AreteDriver/agent-lint/issues"
 
 [tool.setuptools.packages.find]
 where = ["src"]
 
 [tool.setuptools.package-data]
-agent_audit = ["data/*.yaml"]
+agent_lint = ["data/*.yaml"]
 
 [tool.ruff]
 line-length = 100
@@ -59,7 +59,7 @@ target-version = "py311"
 select = ["E", "F", "W", "I", "N", "UP", "B", "A", "SIM"]
 
 [tool.ruff.lint.per-file-ignores]
-"src/agent_audit/cli.py" = ["B008"]
+"src/agent_lint/cli.py" = ["B008"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

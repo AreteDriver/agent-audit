@@ -1,11 +1,11 @@
-"""Tests for agent_audit.comparator."""
+"""Tests for agent_lint.comparator."""
 
 from __future__ import annotations
 
 from pathlib import Path
 
-from agent_audit.comparator import compare_providers
-from agent_audit.parsers import parse_workflow
+from agent_lint.comparator import compare_providers
+from agent_lint.parsers import parse_workflow
 
 
 class TestCompareProviders:

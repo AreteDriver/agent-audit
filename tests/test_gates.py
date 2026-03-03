@@ -1,4 +1,4 @@
-"""Tests for agent_audit.gates."""
+"""Tests for agent_lint.gates."""
 
 from __future__ import annotations
 
@@ -7,8 +7,8 @@ from unittest.mock import patch
 import typer
 from typer.testing import CliRunner
 
-from agent_audit.gates import require_pro
-from agent_audit.licensing import _compute_check_segment
+from agent_lint.gates import require_pro
+from agent_lint.licensing import _compute_check_segment
 
 runner = CliRunner()
 
@@ -16,7 +16,7 @@ runner = CliRunner()
 def _make_valid_key() -> str:
     body = "TEST-ABCD"
     check = _compute_check_segment(body)
-    return f"AAUD-{body}-{check}"
+    return f"ALNT-{body}-{check}"
 
 
 class TestRequirePro:
@@ -30,7 +30,7 @@ class TestRequirePro:
 
         with (
             patch.dict("os.environ", {}, clear=True),
-            patch("agent_audit.licensing._LICENSE_LOCATIONS", []),
+            patch("agent_lint.licensing._LICENSE_LOCATIONS", []),
         ):
             result = runner.invoke(app, [])
             assert result.exit_code == 1
@@ -45,7 +45,7 @@ class TestRequirePro:
             print("success")
 
         key = _make_valid_key()
-        with patch.dict("os.environ", {"AGENT_AUDIT_LICENSE": key}):
+        with patch.dict("os.environ", {"AGENT_LINT_LICENSE": key}):
             result = runner.invoke(app, [])
             assert result.exit_code == 0
             assert "success" in result.output
@@ -68,7 +68,7 @@ class TestRequirePro:
 
         with (
             patch.dict("os.environ", {}, clear=True),
-            patch("agent_audit.licensing._LICENSE_LOCATIONS", []),
+            patch("agent_lint.licensing._LICENSE_LOCATIONS", []),
         ):
             result = runner.invoke(app, [])
-            assert "AGENT_AUDIT_LICENSE" in result.output
+            assert "AGENT_LINT_LICENSE" in result.output

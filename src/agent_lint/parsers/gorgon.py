@@ -4,8 +4,8 @@ from __future__ import annotations
 
 from typing import Any
 
-from agent_audit.config import LLM_STEP_TYPES, STEP_TYPE_PROVIDER_MAP
-from agent_audit.models import ParsedStep, ParsedWorkflow, StepType, WorkflowFormat
+from agent_lint.config import LLM_STEP_TYPES, STEP_TYPE_PROVIDER_MAP
+from agent_lint.models import ParsedStep, ParsedWorkflow, StepType, WorkflowFormat
 
 # Map Gorgon step type strings to normalized StepType.
 _TYPE_MAP: dict[str, StepType] = {

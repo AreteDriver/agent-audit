@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Any
 
-from agent_audit.models import ParsedStep, ParsedWorkflow, StepType, WorkflowFormat
+from agent_lint.models import ParsedStep, ParsedWorkflow, StepType, WorkflowFormat
 
 
 def _parse_agent(agent: dict[str, Any], index: int) -> ParsedStep:

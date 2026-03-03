@@ -1,4 +1,4 @@
-"""Configuration constants and defaults for agent-audit."""
+"""Configuration constants and defaults for agent-lint."""
 
 from __future__ import annotations
 

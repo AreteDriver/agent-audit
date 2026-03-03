@@ -2,33 +2,33 @@
 
 from __future__ import annotations
 
-from agent_audit.models import (
+from agent_lint.models import (
     ParsedStep,
     ParsedWorkflow,
     Severity,
     StepType,
     WorkflowFormat,
 )
-from agent_audit.rules.budget import (
+from agent_lint.rules.budget import (
     check_step_budget_hog,
     check_total_over_budget,
     check_undeclared_tokens,
     check_workflow_budget,
 )
-from agent_audit.rules.efficiency import (
+from agent_lint.rules.efficiency import (
     check_duplicate_roles,
     check_fan_out_no_limit,
     check_lightweight_checkpoint,
     check_parallelizable,
 )
-from agent_audit.rules.resilience import (
+from agent_lint.rules.resilience import (
     check_abort_no_fallback,
     check_missing_checkpoint,
     check_missing_on_failure,
     check_retry_no_max,
     check_shell_no_timeout,
 )
-from agent_audit.rules.security import (
+from agent_lint.rules.security import (
     check_hardcoded_paths,
     check_input_validation,
     check_mcp_no_server,

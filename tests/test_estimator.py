@@ -1,12 +1,12 @@
-"""Tests for agent_audit.estimator."""
+"""Tests for agent_lint.estimator."""
 
 from __future__ import annotations
 
 import pytest
 
-from agent_audit.estimator import estimate_step, estimate_workflow
-from agent_audit.models import ParsedStep, ParsedWorkflow, StepType, WorkflowFormat
-from agent_audit.pricing import reset_cache
+from agent_lint.estimator import estimate_step, estimate_workflow
+from agent_lint.models import ParsedStep, ParsedWorkflow, StepType, WorkflowFormat
+from agent_lint.pricing import reset_cache
 
 
 @pytest.fixture(autouse=True)

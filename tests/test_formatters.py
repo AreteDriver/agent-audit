@@ -1,4 +1,4 @@
-"""Tests for agent_audit.formatters."""
+"""Tests for agent_lint.formatters."""
 
 from __future__ import annotations
 
@@ -6,7 +6,7 @@ from io import StringIO
 
 from rich.console import Console
 
-from agent_audit.formatters import (
+from agent_lint.formatters import (
     format_estimate_json,
     format_estimate_markdown,
     format_estimate_table,
@@ -14,7 +14,7 @@ from agent_audit.formatters import (
     format_lint_markdown,
     format_lint_table,
 )
-from agent_audit.models import (
+from agent_lint.models import (
     LintFinding,
     LintReport,
     RuleCategory,

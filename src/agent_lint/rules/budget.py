@@ -2,9 +2,9 @@
 
 from __future__ import annotations
 
-from agent_audit.config import ROLE_TOKEN_DEFAULTS, STEP_TYPE_TOKEN_DEFAULTS
-from agent_audit.models import LintFinding, ParsedWorkflow, RuleCategory, Severity, StepType
-from agent_audit.rules import lint_rule
+from agent_lint.config import ROLE_TOKEN_DEFAULTS, STEP_TYPE_TOKEN_DEFAULTS
+from agent_lint.models import LintFinding, ParsedWorkflow, RuleCategory, Severity, StepType
+from agent_lint.rules import lint_rule
 
 
 @lint_rule(

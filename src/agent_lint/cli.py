@@ -1,4 +1,4 @@
-"""CLI entry point for agent-audit."""
+"""CLI entry point for agent-lint."""
 
 from __future__ import annotations
 
@@ -7,9 +7,9 @@ from pathlib import Path
 import typer
 from rich.console import Console
 
-from agent_audit import __version__
-from agent_audit.exceptions import AgentAuditError
-from agent_audit.formatters import (
+from agent_lint import __version__
+from agent_lint.exceptions import AgentAuditError
+from agent_lint.formatters import (
     format_compare_json,
     format_compare_table,
     format_estimate_json,
@@ -19,10 +19,10 @@ from agent_audit.formatters import (
     format_lint_markdown,
     format_lint_table,
 )
-from agent_audit.licensing import get_upgrade_message, has_feature
+from agent_lint.licensing import get_upgrade_message, has_feature
 
 app = typer.Typer(
-    name="agent-audit",
+    name="agent-lint",
     help="Analyze agent workflow configs for cost estimation and anti-patterns.",
 )
 console = Console()
@@ -46,7 +46,7 @@ def main(
 ) -> None:
     """Analyze agent workflow configs for cost estimation and anti-patterns."""
     if version:
-        console.print(f"agent-audit {__version__}")
+        console.print(f"agent-lint {__version__}")
         raise typer.Exit()
     if ctx.invoked_subcommand is None:
         console.print(ctx.get_help())
@@ -69,8 +69,8 @@ def estimate(
     fmt: str = typer.Option("table", "--format", "-f", help="Output format (table|json|markdown)."),
 ) -> None:
     """Estimate token usage and cost for a workflow."""
-    from agent_audit.estimator import estimate_workflow
-    from agent_audit.parsers import parse_workflow
+    from agent_lint.estimator import estimate_workflow
+    from agent_lint.parsers import parse_workflow
 
     try:
         wf = parse_workflow(workflow_file)
@@ -114,9 +114,9 @@ def lint(
     fmt: str = typer.Option("table", "--format", "-f", help="Output format (table|json|markdown)."),
 ) -> None:
     """Lint a workflow for anti-patterns and best practice violations."""
-    from agent_audit.linter import run_lint
-    from agent_audit.models import RuleCategory, Severity
-    from agent_audit.parsers import parse_workflow
+    from agent_lint.linter import run_lint
+    from agent_lint.models import RuleCategory, Severity
+    from agent_lint.parsers import parse_workflow
 
     try:
         wf = parse_workflow(workflow_file)
@@ -162,12 +162,12 @@ def lint(
 @app.command()
 def status() -> None:
     """Show license status and available features."""
-    from agent_audit.licensing import TIER_DEFINITIONS, get_license_info
+    from agent_lint.licensing import TIER_DEFINITIONS, get_license_info
 
     info = get_license_info()
     tier_config = TIER_DEFINITIONS[info.tier]
 
-    console.print(f"\n[bold]agent-audit {__version__}[/bold]")
+    console.print(f"\n[bold]agent-lint {__version__}[/bold]")
     console.print(f"[bold]Tier:[/bold] {tier_config.name} ({tier_config.price_label})")
 
     if info.license_key:
@@ -194,8 +194,8 @@ def compare(
     json: bool = typer.Option(False, "--json", help="Output as JSON."),
 ) -> None:
     """Compare workflow costs across providers (Pro feature)."""
-    from agent_audit.comparator import compare_providers
-    from agent_audit.parsers import parse_workflow
+    from agent_lint.comparator import compare_providers
+    from agent_lint.parsers import parse_workflow
 
     # Gate check.
     if not has_feature("compare"):

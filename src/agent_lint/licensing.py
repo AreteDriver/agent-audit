@@ -1,4 +1,4 @@
-"""Licensing and tier management for agent-audit."""
+"""Licensing and tier management for agent-lint."""
 
 from __future__ import annotations
 
@@ -13,16 +13,16 @@ from pydantic import BaseModel, Field
 
 logger = logging.getLogger(__name__)
 
-_KEY_SALT = "agent-audit-v1"
+_KEY_SALT = "agent-lint-v1"
 
 _LICENSE_LOCATIONS: list[str] = [
-    ".agent-audit-license",
-    "~/.config/agent-audit/license",
-    "~/.agent-audit/license",
-    "~/.agent-audit-license",
+    ".agent-lint-license",
+    "~/.config/agent-lint/license",
+    "~/.agent-lint/license",
+    "~/.agent-lint-license",
 ]
 
-_ENV_LICENSE_KEY = "AGENT_AUDIT_LICENSE"
+_ENV_LICENSE_KEY = "AGENT_LINT_LICENSE"
 
 
 class Tier(StrEnum):
@@ -87,9 +87,9 @@ class LicenseInfo(BaseModel):
 
 
 def _validate_key_format(key: str) -> bool:
-    """Check if a license key matches ``AAUD-XXXX-XXXX-XXXX``."""
+    """Check if a license key matches ``ALNT-XXXX-XXXX-XXXX``."""
     key = key.strip()
-    if not key.startswith("AAUD-"):
+    if not key.startswith("ALNT-"):
         return False
     parts = key.split("-")
     if len(parts) != 4:
@@ -169,6 +169,6 @@ def get_upgrade_message(feature: str) -> str:
     """Return a user-facing upgrade prompt for a gated feature."""
     pro_config = TIER_DEFINITIONS[Tier.PRO]
     return (
-        f"'{feature}' requires agent-audit Pro ({pro_config.price_label}).\n"
-        f"Set your key via: export {_ENV_LICENSE_KEY}=AAUD-XXXX-XXXX-XXXX"
+        f"'{feature}' requires agent-lint Pro ({pro_config.price_label}).\n"
+        f"Set your key via: export {_ENV_LICENSE_KEY}=ALNT-XXXX-XXXX-XXXX"
     )

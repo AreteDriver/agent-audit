@@ -2,19 +2,19 @@
 
 from __future__ import annotations
 
-from agent_audit.config import (
+from agent_lint.config import (
     INPUT_OUTPUT_RATIO,
     ROLE_TOKEN_DEFAULTS,
     STEP_TYPE_TOKEN_DEFAULTS,
 )
-from agent_audit.models import (
+from agent_lint.models import (
     ParsedStep,
     ParsedWorkflow,
     StepEstimate,
     StepType,
     WorkflowEstimate,
 )
-from agent_audit.pricing import calculate_cost, get_model_pricing, load_providers
+from agent_lint.pricing import calculate_cost, get_model_pricing, load_providers
 
 
 def _resolve_tokens(step: ParsedStep) -> tuple[int, str]:

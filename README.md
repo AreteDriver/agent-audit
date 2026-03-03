@@ -1,16 +1,16 @@
-# agent-audit
+# agent-lint
 
-[![CI](https://github.com/AreteDriver/agent-audit/actions/workflows/ci.yml/badge.svg)](https://github.com/AreteDriver/agent-audit/actions/workflows/ci.yml)
-[![CodeQL](https://github.com/AreteDriver/agent-audit/actions/workflows/codeql.yml/badge.svg)](https://github.com/AreteDriver/agent-audit/actions/workflows/codeql.yml)
+[![CI](https://github.com/AreteDriver/agent-lint/actions/workflows/ci.yml/badge.svg)](https://github.com/AreteDriver/agent-lint/actions/workflows/ci.yml)
+[![CodeQL](https://github.com/AreteDriver/agent-lint/actions/workflows/codeql.yml/badge.svg)](https://github.com/AreteDriver/agent-lint/actions/workflows/codeql.yml)
 [![Python 3.11+](https://img.shields.io/badge/python-3.11%2B-blue.svg)](https://www.python.org/downloads/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
 
 **Catch expensive agent pipelines before they run.**
 
-`agent-audit` is the eslint of agent workflows. It reads your YAML configs, flags structural problems, and tells you what a run will cost — before you press enter.
+`agent-lint` is the eslint of agent workflows. It reads your YAML configs, flags structural problems, and tells you what a run will cost — before you press enter.
 
 ```
-$ agent-audit lint workflow.yaml
+$ agent-lint lint workflow.yaml
 
   3 steps validated
   [warn] step 2: model=claude-opus-4-6 — consider claude-sonnet-4-6 (~$0.18 -> ~$0.02 per run)
@@ -19,7 +19,7 @@ $ agent-audit lint workflow.yaml
 
   Score: 62/100
 
-$ agent-audit estimate workflow.yaml
+$ agent-lint estimate workflow.yaml
 
   Step 1  researcher    claude-sonnet-4-6    ~4,200 tokens    $0.02
   Step 2  writer        claude-opus-4-6      ~8,800 tokens    $0.18
@@ -34,14 +34,14 @@ No proxies. No SDK integration. Just point it at your workflow file.
 ## Install
 
 ```bash
-pip install agent-audit
+pip install agent-lint
 ```
 
 ## Why
 
 Every agent framework lets you *run* workflows. None of them tell you what it will cost before you do. You find out three days later when the invoice arrives.
 
-`agent-audit` catches the problems that don't show up in testing:
+`agent-lint` catches the problems that don't show up in testing:
 
 - The step using Opus when Sonnet would do
 - The loop with no max_tokens that could run up a $200 bill
@@ -52,19 +52,19 @@ Every agent framework lets you *run* workflows. None of them tell you what it wi
 
 ```bash
 # Estimate costs for a workflow
-agent-audit estimate workflow.yaml
-agent-audit estimate workflow.yaml --provider openai
-agent-audit estimate workflow.yaml --json
+agent-lint estimate workflow.yaml
+agent-lint estimate workflow.yaml --provider openai
+agent-lint estimate workflow.yaml --json
 
 # Lint for anti-patterns
-agent-audit lint workflow.yaml
-agent-audit lint workflow.yaml --fail-under 80   # CI gate
+agent-lint lint workflow.yaml
+agent-lint lint workflow.yaml --fail-under 80   # CI gate
 
 # Compare providers side-by-side (Pro)
-agent-audit compare workflow.yaml
+agent-lint compare workflow.yaml
 
 # Check license status
-agent-audit status
+agent-lint status
 ```
 
 ## Supported Formats
@@ -91,7 +91,7 @@ agent-audit status
 
 | | Pre-run cost estimate | Workflow linting | No proxy required | CLI-native |
 |---|:---:|:---:|:---:|:---:|
-| **agent-audit** | Yes | Yes | Yes | Yes |
+| **agent-lint** | Yes | Yes | Yes | Yes |
 | Langfuse | No (post-run) | No | No (SDK required) | No |
 | Datadog LLM Observability | No (post-run) | No | No (agent required) | No |
 | Manual review | No | No | Yes | -- |
@@ -99,9 +99,9 @@ agent-audit status
 ## CI Integration
 
 ```yaml
-# .github/workflows/agent-audit.yml
+# .github/workflows/agent-lint.yml
 - name: Lint agent workflows
-  run: agent-audit lint workflows/ --fail-under 80
+  run: agent-lint lint workflows/ --fail-under 80
 ```
 
 Exits non-zero when the health score drops below your threshold.

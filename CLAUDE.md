@@ -1,11 +1,11 @@
-# CLAUDE.md — agent-audit
+# CLAUDE.md — agent-lint
 
 ## Project Overview
 CLI tool that analyzes agent workflow YAML configs for cost estimation, anti-pattern detection (linting), and multi-provider comparison. Supports Gorgon/Forge, CrewAI, LangChain/LangGraph, and generic YAML formats.
 
 ## Quick Start
 ```bash
-cd /home/arete/projects/agent-audit
+cd /home/arete/projects/agent-lint
 source .venv/bin/activate
 pip install -e ".[dev]"
 pytest tests/ -v
@@ -13,25 +13,25 @@ ruff check src/ tests/ && ruff format --check src/ tests/
 ```
 
 ## Architecture
-- **src layout**: `src/agent_audit/` with 15 modules across 4 packages
-- **Entry point**: `agent-audit = "agent_audit.cli:app"` (Typer)
+- **src layout**: `src/agent_lint/` with 15 modules across 4 packages
+- **Entry point**: `agent-lint = "agent_lint.cli:app"` (Typer)
 - **Models**: Pydantic v2 (`models.py`)
 - **Parsers**: Strategy pattern — `detect_format()` dispatches to format-specific parser
 - **Estimator**: 3-tier token resolution (declared → archetype → default), bundled pricing YAML
 - **Linter**: `@lint_rule` decorator registry, 17 rules across 4 categories
-- **Licensing**: HMAC-checksum keys, prefix `AAUD`, salt `agent-audit-v1`
+- **Licensing**: HMAC-checksum keys, prefix `ALNT`, salt `agent-lint-v1`
 
 ## Key Commands
 ```bash
-agent-audit estimate workflow.yaml                    # Cost estimate (table)
-agent-audit estimate workflow.yaml --json             # JSON output
-agent-audit estimate workflow.yaml --format markdown  # Markdown output
-agent-audit estimate workflow.yaml --provider ollama  # Override provider
-agent-audit lint workflow.yaml                        # Lint for anti-patterns
-agent-audit lint workflow.yaml --category budget      # Filter by category
-agent-audit lint workflow.yaml --fail-under 80        # CI mode (exit 1 if below)
-agent-audit compare workflow.yaml                     # Multi-provider comparison (Pro)
-agent-audit status                                    # Show license tier
+agent-lint estimate workflow.yaml                    # Cost estimate (table)
+agent-lint estimate workflow.yaml --json             # JSON output
+agent-lint estimate workflow.yaml --format markdown  # Markdown output
+agent-lint estimate workflow.yaml --provider ollama  # Override provider
+agent-lint lint workflow.yaml                        # Lint for anti-patterns
+agent-lint lint workflow.yaml --category budget      # Filter by category
+agent-lint lint workflow.yaml --fail-under 80        # CI mode (exit 1 if below)
+agent-lint compare workflow.yaml                     # Multi-provider comparison (Pro)
+agent-lint status                                    # Show license tier
 ```
 
 ## Workflow Formats

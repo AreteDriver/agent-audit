@@ -1,10 +1,10 @@
-"""Custom exceptions for agent-audit."""
+"""Custom exceptions for agent-lint."""
 
 from __future__ import annotations
 
 
 class AgentAuditError(Exception):
-    """Base exception for all agent-audit errors."""
+    """Base exception for all agent-lint errors."""
 
 
 class ParseError(AgentAuditError):

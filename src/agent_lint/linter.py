@@ -3,17 +3,17 @@
 from __future__ import annotations
 
 # Ensure rules are registered by importing the modules.
-import agent_audit.rules.budget  # noqa: F401
-import agent_audit.rules.resilience  # noqa: F401
-from agent_audit.config import SEVERITY_DEDUCTIONS
-from agent_audit.models import (
+import agent_lint.rules.budget  # noqa: F401
+import agent_lint.rules.resilience  # noqa: F401
+from agent_lint.config import SEVERITY_DEDUCTIONS
+from agent_lint.models import (
     LintFinding,
     LintReport,
     ParsedWorkflow,
     RuleCategory,
     Severity,
 )
-from agent_audit.rules import get_all_rules, get_rules_by_category
+from agent_lint.rules import get_all_rules, get_rules_by_category
 
 
 def _import_all_rules() -> None:
@@ -21,9 +21,9 @@ def _import_all_rules() -> None:
     import contextlib
 
     with contextlib.suppress(ImportError):
-        import agent_audit.rules.efficiency  # noqa: F401
+        import agent_lint.rules.efficiency  # noqa: F401
     with contextlib.suppress(ImportError):
-        import agent_audit.rules.security  # noqa: F401
+        import agent_lint.rules.security  # noqa: F401
 
 
 def run_lint(

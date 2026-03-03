@@ -1,12 +1,12 @@
-"""Tests for agent_audit.pricing."""
+"""Tests for agent_lint.pricing."""
 
 from __future__ import annotations
 
 import pytest
 
-from agent_audit.exceptions import PricingError
-from agent_audit.models import ModelPricing
-from agent_audit.pricing import (
+from agent_lint.exceptions import PricingError
+from agent_lint.models import ModelPricing
+from agent_lint.pricing import (
     calculate_cost,
     get_model_pricing,
     list_models,

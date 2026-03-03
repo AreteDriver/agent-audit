@@ -1,4 +1,4 @@
-"""Pydantic v2 models for agent-audit."""
+"""Pydantic v2 models for agent-lint."""
 
 from __future__ import annotations
 

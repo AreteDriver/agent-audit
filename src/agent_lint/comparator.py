@@ -2,9 +2,9 @@
 
 from __future__ import annotations
 
-from agent_audit.estimator import estimate_workflow
-from agent_audit.models import CompareResult, ParsedWorkflow, WorkflowEstimate
-from agent_audit.pricing import list_providers, load_providers
+from agent_lint.estimator import estimate_workflow
+from agent_lint.models import CompareResult, ParsedWorkflow, WorkflowEstimate
+from agent_lint.pricing import list_providers, load_providers
 
 
 def compare_providers(

@@ -1,4 +1,4 @@
-# Provider pricing database for agent-audit.
+# Provider pricing database for agent-lint.
 # Prices in USD per 1K tokens. Updated 2025-Q4.
 
 providers:

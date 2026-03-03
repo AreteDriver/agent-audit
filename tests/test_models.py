@@ -1,8 +1,8 @@
-"""Tests for agent_audit.models."""
+"""Tests for agent_lint.models."""
 
 from __future__ import annotations
 
-from agent_audit.models import (
+from agent_lint.models import (
     CompareResult,
     LintFinding,
     LintReport,

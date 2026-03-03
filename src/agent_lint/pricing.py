@@ -6,9 +6,9 @@ import logging
 
 import yaml
 
-from agent_audit.config import PROVIDERS_FILE
-from agent_audit.exceptions import PricingError
-from agent_audit.models import ModelPricing, ProviderConfig
+from agent_lint.config import PROVIDERS_FILE
+from agent_lint.exceptions import PricingError
+from agent_lint.models import ModelPricing, ProviderConfig
 
 logger = logging.getLogger(__name__)
 

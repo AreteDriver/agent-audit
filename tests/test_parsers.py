@@ -1,4 +1,4 @@
-"""Tests for agent_audit.parsers."""
+"""Tests for agent_lint.parsers."""
 
 from __future__ import annotations
 
@@ -6,9 +6,9 @@ from pathlib import Path
 
 import pytest
 
-from agent_audit.exceptions import ParseError
-from agent_audit.models import StepType, WorkflowFormat
-from agent_audit.parsers import detect_format, load_yaml, parse_workflow
+from agent_lint.exceptions import ParseError
+from agent_lint.models import StepType, WorkflowFormat
+from agent_lint.parsers import detect_format, load_yaml, parse_workflow
 
 # ---------------------------------------------------------------------------
 # detect_format

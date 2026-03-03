@@ -5,7 +5,7 @@ from __future__ import annotations
 from collections.abc import Callable
 from dataclasses import dataclass
 
-from agent_audit.models import LintFinding, ParsedWorkflow, RuleCategory, Severity
+from agent_lint.models import LintFinding, ParsedWorkflow, RuleCategory, Severity
 
 # Type alias for rule functions.
 RuleFunc = Callable[[ParsedWorkflow], list[LintFinding]]

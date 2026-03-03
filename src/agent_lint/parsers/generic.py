@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Any
 
-from agent_audit.models import ParsedStep, ParsedWorkflow, StepType, WorkflowFormat
+from agent_lint.models import ParsedStep, ParsedWorkflow, StepType, WorkflowFormat
 
 
 def _guess_step_type(config: dict[str, Any]) -> StepType:
