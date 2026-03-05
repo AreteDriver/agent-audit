@@ -1,35 +1,22 @@
 # agent-lint
 
-[![CI](https://github.com/AreteDriver/agent-lint/actions/workflows/ci.yml/badge.svg)](https://github.com/AreteDriver/agent-lint/actions/workflows/ci.yml)
-[![CodeQL](https://github.com/AreteDriver/agent-lint/actions/workflows/codeql.yml/badge.svg)](https://github.com/AreteDriver/agent-lint/actions/workflows/codeql.yml)
-[![Python 3.11+](https://img.shields.io/badge/python-3.11%2B-blue.svg)](https://www.python.org/downloads/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](https://opensource.org/licenses/MIT)
+**CLI tool for cost estimation and anti-pattern detection in agent workflow YAML configs.**
+Catch expensive, fragile, or ungoverned agent workflows before they hit production.
 
-**Catch expensive agent pipelines before they run.**
+[![PyPI](https://img.shields.io/pypi/v/agentlinter.svg)](https://pypi.org/project/agentlinter/)
+[![Python](https://img.shields.io/badge/python-3.11+-blue.svg)](https://python.org)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![CI](https://github.com/AreteDriver/agent-lint/actions/workflows/ci.yml/badge.svg)](https://github.com/AreteDriver/agent-lint/actions)
 
-`agent-lint` is the eslint of agent workflows. It reads your YAML configs, flags structural problems, and tells you what a run will cost — before you press enter.
+---
 
-```
-$ agent-lint lint workflow.yaml
+## The Problem
 
-  3 steps validated
-  [warn] step 2: model=claude-opus-4-6 — consider claude-sonnet-4-6 (~$0.18 -> ~$0.02 per run)
-  [warn] step 3: no max_tokens set — cost unbounded
-  [fail] step 1: missing fallback handler — silent failure risk
+Agent workflows fail in predictable ways: unbounded loops, no retry limits, missing cost guards, parallel branches with no coordination. Most teams find these problems in production — after a $400 API bill or a stuck workflow that ran for six hours.
 
-  Score: 62/100
+`agent-lint` finds them at config time.
 
-$ agent-lint estimate workflow.yaml
-
-  Step 1  researcher    claude-sonnet-4-6    ~4,200 tokens    $0.02
-  Step 2  writer        claude-opus-4-6      ~8,800 tokens    $0.18
-  Step 3  reviewer      claude-sonnet-4-6    ~3,100 tokens    $0.01
-  ──────────────────────────────────────────────────────────────────
-  Total                                     ~16,100 tokens    $0.21
-  Monthly (3x/day)                                           ~$19
-```
-
-No proxies. No SDK integration. Just point it at your workflow file.
+---
 
 ## Install
 
@@ -37,64 +24,47 @@ No proxies. No SDK integration. Just point it at your workflow file.
 pip install agentlinter
 ```
 
-## Why
-
-Every agent framework lets you *run* workflows. None of them tell you what it will cost before you do. You find out three days later when the invoice arrives.
-
-`agent-lint` catches the problems that don't show up in testing:
-
-- The step using Opus when Sonnet would do
-- The loop with no max_tokens that could run up a $200 bill
-- The missing error handler that silently retries (and silently bills)
-- The hardcoded path that works on your machine and nowhere else
+---
 
 ## Usage
 
 ```bash
-# Estimate costs for a workflow
-agent-lint estimate workflow.yaml
-agent-lint estimate workflow.yaml --provider openai
-agent-lint estimate workflow.yaml --json
-
-# Lint for anti-patterns
+# Lint a single workflow config
 agent-lint lint workflow.yaml
-agent-lint lint workflow.yaml --fail-under 80   # CI gate
 
-# Compare providers side-by-side (Pro)
-agent-lint compare workflow.yaml
+# Lint all workflows in a directory, fail CI if score < 80
+agent-lint lint workflows/ --fail-under 80
 
-# Check license status
-agent-lint status
+# Estimate token/cost exposure for a workflow
+agent-lint estimate workflow.yaml --provider anthropic
+
+# Generate a full audit report
+agent-lint lint workflows/ --format markdown
 ```
 
-## Supported Formats
+---
 
-| Format | Detection |
-|--------|-----------|
-| Gorgon/Forge | `steps[].type` matches known step types |
-| CrewAI | `agents` + `tasks` top-level keys |
-| LangChain/LangGraph | `nodes` or `edges` structure |
-| Generic | Any YAML with step-like structures |
+## What It Detects
 
-## Lint Rules
+**Anti-patterns:**
+- Unbounded retry loops (no max_retries or timeout)
+- Missing cost guards on high-token operations
+- Parallel agent branches with no merge strategy
+- Hard-coded API keys in config (security)
+- Missing checkpointing on long-running workflows
+- Agents with no defined output schema
 
-17 rules across 4 categories:
+**Cost estimation:**
+- Token budget projection per workflow step
+- Worst-case / expected-case / best-case cost ranges
+- Model-aware pricing (Claude, GPT-4, Gemini)
 
-| Category | What it catches | IDs |
-|----------|----------------|-----|
-| **Budget** | Missing budgets, unbounded costs, over-budget steps | B001-B004 |
-| **Resilience** | Missing error handlers, no retries, no timeouts | R001-R005 |
-| **Efficiency** | Missed parallelization, redundant steps | E001-E004 |
-| **Security** | Prompt injection risk, hardcoded paths/secrets | S001-S004 |
+**Scoring:**
+- 0-100 score per workflow
+- Error (-15 pts), warning (-5 pts), info (-1 pt)
+- CI integration: `--fail-under` threshold
 
-## How It Compares
-
-| | Pre-run cost estimate | Workflow linting | No proxy required | CLI-native |
-|---|:---:|:---:|:---:|:---:|
-| **agent-lint** | Yes | Yes | Yes | Yes |
-| Langfuse | No (post-run) | No | No (SDK required) | No |
-| Datadog LLM Observability | No (post-run) | No | No (agent required) | No |
-| Manual review | No | No | Yes | -- |
+---
 
 ## CI Integration
 
@@ -104,19 +74,27 @@ agent-lint status
   run: agent-lint lint workflows/ --fail-under 80
 ```
 
-Exits non-zero when the health score drops below your threshold.
+Treat your agent configs like production code. Gate them the same way.
 
-## Free vs Pro
+---
 
-| Feature | Free | Pro |
-|---------|:---:|:---:|
-| Cost estimation | Yes | Yes |
-| Lint (17 rules) | Yes | Yes |
-| JSON output | Yes | Yes |
-| Multi-provider comparison | -- | Yes |
-| Markdown export | -- | Yes |
-| Custom pricing tables | -- | Yes |
+## Why Static Analysis
 
-## License
+No LLM dependency. No API calls. No variance between runs.
+Agent configs are deterministic artifacts — they should be audited deterministically.
 
-MIT
+---
+
+## Status
+
+- [x] Anti-pattern detection (17 rules)
+- [x] Cost estimation (Claude, GPT-4)
+- [x] CI integration with threshold gating
+- [x] Markdown audit reports
+- [ ] Gemini pricing model
+- [ ] VS Code extension
+- [ ] Auto-fix suggestions
+
+---
+
+*Part of the [AreteDriver](https://github.com/AreteDriver) AI tooling ecosystem.*
