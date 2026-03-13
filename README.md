@@ -112,6 +112,8 @@ Agent configs are deterministic artifacts — they should be audited determinist
 
 **Get Pro:** [Monthly ($8/mo)](https://buy.stripe.com/dRm9AT3WPbp95habIzgrS02) | [Yearly ($69/yr)](https://buy.stripe.com/6oU00j0KDgJt4d6aEvgrS03)
 
+**All 5 Tools Bundle:** [Monthly ($29/mo)](https://buy.stripe.com/7sY9AT9h90Kv5ha27ZgrS0a) | [Yearly ($199/yr)](https://buy.stripe.com/9B6fZh9h98cX24YfYPgrS0b) — includes claudemd-forge, agent-lint, ai-spend, promptctl, context-hygiene
+
 **Activate:**
 ```bash
 export AGENT_LINT_LICENSE=ALNT-XXXX-XXXX-XXXX
