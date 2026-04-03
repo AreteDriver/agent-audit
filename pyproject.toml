@@ -7,7 +7,7 @@ name = "agentlinter"
 version = "0.2.1"
 description = "Estimate costs and lint agent workflow YAML files"
 readme = "README.md"
-license = {text = "MIT"}
+license = {text = "BSL-1.1"}
 requires-python = ">=3.11"
 authors = [{name = "AreteDriver"}]
 keywords = ["ai", "agents", "workflow", "cost", "linter", "claude", "openai", "ollama"]

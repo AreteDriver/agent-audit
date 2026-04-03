@@ -5,7 +5,7 @@ CLI tool that analyzes agent workflow YAML configs for cost estimation, anti-pat
 
 ## Quick Start
 ```bash
-cd /home/arete/projects/agent-audit
+cd ./
 source .venv/bin/activate
 pip install -e ".[dev]"
 ```
@@ -118,7 +118,7 @@ Resolution order per step:
 - Ruff lint + format (B008 suppressed for cli.py — Typer `Option()` pattern)
 - Dependencies: typer, rich, pydantic, pyyaml (httpx optional for server validation)
 - Three-name scheme: PyPI=`agentlinter`, import=`agent_lint`, CLI=`agent-lint`
-- Local directory: `/home/arete/projects/agent-audit`
+- Local directory: project root
 
 ## Git Conventions
 - Conventional commits: `feat:`, `fix:`, `docs:`, `refactor:`, `test:`, `chore:`
